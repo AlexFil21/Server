@@ -1,0 +1,417 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Tahoma";
+  height: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+a,
+span,
+div,
+p,
+input {
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-size: 13px;
+  color: #000;
+  font-family: "Tahoma";
+  font-weight: normal;
+  list-style: none;
+  text-decoration: none;
+}
+.header {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background: #4682B4;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .title span {
+  padding-left: 15px;
+  font-size: 40px;
+  color: #f5efef;
+}
+.header .regLog span {
+  margin: 5px;
+  padding: 10px;
+  font-size: 15px;
+  background-color: #00008B;
+  border-radius: 10%;
+  color: #fff;
+  cursor: pointer;
+}
+.header .regLog:nth-child(2) {
+  margin-right: 30px;
+}
+.header .regLog.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.nikSignOut {
+  position: absolute;
+  top: 35px;
+  right: 30px;
+  opacity: 0;
+  visibility: hidden;
+}
+.nikSignOut span {
+  margin: 5px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 10%;
+  color: #fff;
+}
+.nikSignOut #signOut {
+  background-color: #00008B;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10%;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.nikSignOut.show {
+  opacity: 1;
+  visibility: visible;
+}
+.wrapperLog {
+  position: relative;
+}
+.wrapperLog .logForm {
+  position: absolute;
+  right: 25px;
+  top: -15px;
+  width: 200px;
+  min-height: 100px;
+  background: #59646d;
+  padding: 15px;
+  border-radius: 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in;
+}
+.wrapperLog .logForm.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
+}
+.wrapperLog .logForm input {
+  display: block;
+  width: 100%;
+  line-height: 30px;
+  background: #eee;
+  border-width: 0;
+  box-shadow: 0 0 0 ;
+  border-radius: 20px;
+  padding-left: 5px;
+}
+.wrapperLog .logForm input:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.wrapperLog .logForm label {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  color: #FAAB1B;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 3px;
+}
+.wrapperLog .logForm .submit-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #FAAB1B;
+  float: right;
+  width: 20%;
+  border-radius: 15px;
+  margin-top: 7px;
+}
+.wrapperLog .logForm .submit-button button {
+  background: #FAAB1B;
+  border-width: 0;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #000;
+  cursor: pointer;
+}
+.wrapperLog .logForm .submit-button button:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.wrapperLog .registration {
+  position: absolute;
+  display: block;
+  left: 50%;
+  margin-left: -150px;
+  top: -25px;
+  min-width: 400px;
+  min-height: 250px;
+  background: #59646d;
+  padding: 10px;
+  border-radius: 10PX;
+  z-index: 3;
+  visibility: hidden;
+  opacity: 0;
+  transition: all .4s linear;
+}
+.wrapperLog .registration.active {
+  opacity: 1;
+  visibility: visible;
+}
+.wrapperLog .registration input {
+  display: inline-block;
+  min-width: 100%;
+  line-height: 30px;
+  background: #eee;
+  padding-left: 5px;
+  border-width: 0;
+  border-radius: 20px;
+  margin-bottom: 5px;
+}
+.wrapperLog .registration input:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.wrapperLog .registration label {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  color: #FAAB1B;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 3px;
+}
+.wrapperLog .registration .subForm {
+  display: inline-block;
+  padding: 5px 10px;
+  width: 20%;
+  background: #FAAB1B;
+  float: right;
+  border-radius: 15px;
+  margin: 15px;
+  cursor: pointer;
+}
+.wrapperLog .registration .subForm button {
+  padding-left: 25px;
+  background: #FAAB1B;
+  border-width: 0;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: #000;
+  cursor: pointer;
+}
+.wrapperLog .registration .subForm button:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.wrapperLog #background {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+}
+.wrapperLog #background.active {
+  opacity: 1;
+  visibility: visible;
+  background: rgba(49, 48, 48, 0.4);
+}
+.newsContent {
+  width: 100vw;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.newsContent :nth-child(1) {
+  margin-top: 10px;
+}
+.newsContent .article {
+  position: relative;
+  width: 500px;
+  min-height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 15px;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 50px;
+}
+.newsContent .article :nth-child(1) {
+  font-size: 20px;
+  padding-bottom: 5px;
+}
+.newsContent .article :nth-child(2) {
+  font-size: 15px;
+  padding-bottom: 5px;
+}
+.newsContent .article :nth-child(3) {
+  color: brown;
+  font-weight: bold;
+  padding: 3px;
+}
+.newsContent .article .btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 70px;
+  line-height: 2.3;
+  padding: 2px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: red;
+  text-align: center;
+  color: #eee;
+  font-size: 12px;
+  cursor: pointer;
+}
+.addArticle {
+  position: absolute;
+  right: 5%;
+  bottom: 50px;
+  width: 70px;
+  height: 70px;
+  background-color: red;
+  border-radius: 100%;
+  text-align: center;
+}
+.addArticle .text {
+  color: #fff;
+  font-size: 50px;
+  cursor: pointer;
+}
+.newArticle {
+  position: relative;
+  width: 100vw;
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  transition: all .4s linear;
+}
+.newArticle.active {
+  opacity: 1;
+  visibility: visible;
+}
+.newArticle .form {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: -180px;
+  display: block;
+  width: 50vw;
+  min-height: 400px;
+  background: #0f3555;
+  padding: 30px;
+  border-radius: 10PX;
+}
+.newArticle .form input {
+  display: inline-block;
+  min-width: 100%;
+  line-height: 30px;
+  background: #eee;
+  padding-left: 5px;
+  border-width: 0;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  font-size: 17px;
+}
+.newArticle .form input:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.newArticle .form label {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  color: #d3d4da;
+  text-transform: uppercase;
+  font-size: 15px;
+  padding: 5px;
+}
+.newArticle .form textarea {
+  display: block;
+  width: 100%;
+  min-height: 50px;
+  margin-bottom: 5px;
+  border-width: 0;
+  border-radius: 10px;
+  font-size: 12px;
+  padding: 3px;
+  padding-left: 10px;
+  font-size: 17px;
+}
+.newArticle .form textarea:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.newArticle .form .submitForm {
+  display: inline-block;
+  padding: 5px 10px;
+  width: 20%;
+  background: #0d045f;
+  float: right;
+  border-radius: 15px;
+  margin: 15px;
+  cursor: pointer;
+}
+.newArticle .form .submitForm input,
+.newArticle .form .submitForm button {
+  padding-left: 35px;
+  background: #0d045f;
+  border-width: 0;
+  text-transform: uppercase;
+  color: #eee;
+}
+.newArticle .form .submitForm input:focus,
+.newArticle .form .submitForm button:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+.backgroundForArticle {
+  position: fixed;
+  width: 100vw;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+.backgroundForArticle.active {
+  opacity: 1;
+  visibility: visible;
+  background: rgba(20, 24, 218, 0.6);
+}
+.attention {
+  position: absolute;
+  padding: 7px;
+  right: 2%;
+  bottom: 150px;
+  width: 170px;
+  min-height: 70px;
+  border-radius: 5%;
+  font-size: 20px;
+  color: #eee;
+  background-color: brown;
+  text-align: center;
+}
