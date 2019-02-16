@@ -1,27 +1,25 @@
-var express = require('express') 
-var fs = require("fs")
-var bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var path = require("path");
-var mysql = require('mysql');
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-var jsonParser = bodyParser.json();
-var sess;
+const express = require('express'), 
+      fs = require("fs"),
+      bodyParser = require('body-parser'),
+      session = require('express-session'),
+      path = require("path"),
+      mysql = require('mysql'),
+      urlencodedParser = bodyParser.urlencoded({ extended: false }),
+      jsonParser = bodyParser.json()
 
-var app = express()
+const app = express()
 
 app.set('views', __dirname + '/html');
 app.engine('html', require('ejs').renderFile);
 
-var connect = mysql.createConnection({
+const connect = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
     password: "password",
     database: "user",
     port: '3306'
 });
-app.listen(3000)
+app.listen(8080)
 
 
 app.use(session({
@@ -33,40 +31,34 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, '')));
 
-app.get('/', function (req, res) {
-    
-    sess=req.session;
+app.get('/',  (req, res) => {  
+    sess = req.session;
 	if(sess.name)
 	{
 		res.redirect('/authorizedUser/:authorUser');
 	}
 	else{
         res.render('index.html');
-        //res.end("huinia")
 	}
 });
 
-app.delete('/delete:id', function(req,res){
-    connect.query("DELETE FROM users WHERE id=" + req.params.id, 
-       function(err, result){
+app.delete('/delete:id', (req,res) => {
+    connect.query(`DELETE FROM users WHERE id=${req.params.id}`, (err, result) => {
         if(err) throw err;
         console.log("1 record delete");
         res.send(req.params.id);
     });
 })
 
-app.post('/database', function(req, res){
-    var body ='';
-    req.on('data', function (data) 
-    {
+app.post('/database', (req, res) => {
+    body = '';
+    req.on('data', (data) => {
         body += data; 
     })
-    req.on('end', function () 
-    {
-        var article = JSON.parse(body)
-        connect.query("INSERT INTO users (title, content, author, published) VALUE ('"+article.articleTitle+"', "
-           + " '"+article.articleContent+"', '"+article.articleAuthor+"', '"+article.articleDate+"')", 
-           function(err, result){
+    req.on('end', () => {
+        article = JSON.parse(body)
+        connect.query(`INSERT INTO users (title, content, author, published) VALUE ('${article.articleTitle}',
+           '${article.articleContent}', '${article.articleAuthor}', '${article.articleDate}')`, (err, result) => {
                 if(err) throw err;
                 console.log(result);
             });
@@ -74,31 +66,30 @@ app.post('/database', function(req, res){
     });  
 });
 
-app.get('/database', function (req, res) {
-    connect.query("SELECT * FROM users", function (err, result, fields) {
-            if (err) throw err;
-            //console.log(result[0]);
-            res.send(result);
-        });
-});
-app.get('/users', function (req, res) {
-    connect.query("SELECT * FROM authorizedUser", function (err, result, fields) {
+app.get('/database',  (req, res) => {
+    connect.query("SELECT * FROM users", (err, result) => {
             if (err) throw err;
             res.send(result);
         });
 });
-app.post('/users', function(req, res){
-    var body ='';
-    req.on('data', function (data) 
-    {
+app.get('/users', (req, res) => {
+    connect.query("SELECT * FROM authorizedUser", (err, result) =>{
+            if (err) throw err;
+            res.send(result);
+        });
+});
+app.post('/users', (req, res) => {
+    
+    body ='';
+    req.on('data', (data) => {
         body += data; 
     })
-    req.on('end', function () 
-    {
-        var newUser = JSON.parse(body)
-        connect.query("INSERT INTO authorizedUser (firstName, lastName, userName, email, password, passwordRep) VALUE ('"+newUser.firstN+"', "
-       +" '"+newUser.lastN+"', '"+newUser.userN+"', '"+newUser.email+"', '"+newUser.pass+"', '"+newUser.repPass+"')", 
-           function(err, result){
+    req.on('end', () => {
+        
+        newUser = JSON.parse(body)
+        connect.query(`INSERT INTO authorizedUser (firstName, lastName, userName, email, password, passwordRep) VALUE ('${newUser.firstN}',
+       '${newUser.lastN}', '${newUser.userN}', '${newUser.email}', '${newUser.pass}', '${newUser.repPass}')`, 
+            (err, result) => {
                 if(err) throw err;
                 console.log(result);
             });
@@ -106,19 +97,17 @@ app.post('/users', function(req, res){
     });   
 });
 
-app.post('/authorizedUser', jsonParser, function(req, res) {
+app.post('/authorizedUser', jsonParser, (req, res) => {
+   
     sess = req.session;	
+    const post = req.body;
+    const name = post.nikName;
+    const pass = post.pass;
 
-    var post = req.body;
-    var name = post.nikName;
-    var pass = post.pass;
-    //console.log(name, pass);
-
-    connect.query('SELECT * FROM authorizedUser', 
-    function(err, result) {
-        var resultArray = Object.values(JSON.parse(JSON.stringify(result)))
-           //console.log(resultArray[i].userName);
-           for (var i in resultArray){
+    connect.query('SELECT * FROM authorizedUser', (err, result) => {
+        resultArray = Object.values(JSON.parse(JSON.stringify(result)))
+           
+           for (let i in resultArray){
                if (resultArray[i].userName == name && resultArray[i].password == pass) {
                    sess.name = name;
                    sess.pass = pass;
@@ -132,33 +121,30 @@ app.post('/authorizedUser', jsonParser, function(req, res) {
     });
 });
 
-app.get('/authorizedUser', function(req,res){
+app.get('/authorizedUser', (req,res) => {
     sess = req.session;
     if(sess.name){
-        res.send(sess.name)
+        res.end(sess.name)
     }
 })
 
-app.get('/authorizedUser/:authorUser',function(req,res){
-    //console.log(req.params.p);
+app.get('/authorizedUser/:authorUser', (req,res) => {
 	sess = req.session;
 	if(sess.name)	
 	{
         res.render('index.html');
-        //res.write('<a href='+'/logout'+'>Logout</a>');
-        //res.write('<h1>Hello '+sess.name+'</h1><br>');
 	}
 	else
 	{
 		res.write('<h1>Please login first.</h1>');
-		res.end('<a href='+'/'+'>Login</a>');
+		res.end('<a href="/">Login</a>');
 	}
 
 });
 
-app.get('/logout',function(req,res){
+app.get('/logout', (req,res) => {
 	
-	req.session.destroy(function(err){
+	req.session.destroy((err) => {
 		if(err){
 			console.log(err);
 		}
